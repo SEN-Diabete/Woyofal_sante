@@ -181,7 +181,145 @@
         .section.active {
             display: block;
         }
-        
+
+        /* Interface WhatsApp */
+        .whatsapp-container {
+            max-width: 400px;
+            margin: 0 auto;
+            background: #e5ddd5;
+            height: 600px;
+            display: flex;
+            flex-direction: column;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .whatsapp-header {
+            background: #075e54;
+            color: white;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .wa-contact {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .wa-avatar {
+            font-size: 24px;
+        }
+
+        .wa-name {
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .wa-status {
+            font-size: 12px;
+            opacity: 0.8;
+        }
+
+        .wa-messages {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .message {
+            max-width: 80%;
+            padding: 8px 12px;
+            border-radius: 8px;
+            position: relative;
+        }
+
+        .message.sent {
+            align-self: flex-end;
+            background: #dcf8c6;
+        }
+
+        .message.received {
+            align-self: flex-start;
+            background: white;
+        }
+
+        .message.system {
+            align-self: center;
+            background: #fff9c4;
+            text-align: center;
+            max-width: 90%;
+        }
+
+        .message-content {
+            margin-bottom: 5px;
+        }
+
+        .message-time {
+            font-size: 11px;
+            opacity: 0.6;
+            text-align: right;
+        }
+
+        .wa-input-container {
+            background: #f0f0f0;
+            padding: 10px;
+            border-top: 1px solid #ddd;
+        }
+
+        .wa-input-wrapper {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .wa-input {
+            flex: 1;
+            padding: 12px 15px;
+            border: none;
+            border-radius: 20px;
+            outline: none;
+        }
+
+        .quick-buttons {
+            display: flex;
+            gap: 5px;
+            margin-top: 8px;
+            justify-content: center;
+        }
+
+        .quick-btn {
+            padding: 6px 12px;
+            border: 1px solid #075e54;
+            border-radius: 15px;
+            background: white;
+            color: #075e54;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .quick-btn:hover {
+            background: #075e54;
+            color: white;
+        }
+
+        .wa-send-btn {
+            background: #075e54;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -383,11 +521,11 @@
                 <h3>👤 Connexion Patient</h3>
                 <div class="form-group">
                     <label class="form-label">Numéro de téléphone</label>
-                    <input type="tel" class="form-input" id="patientPhone" placeholder="+33123456789" required>
+                    <input type="tel" class="form-input" id="patientPhone" placeholder="+221701234567" required>
                 </div>
                 <button class="btn btn-primary" onclick="loginPatient()">Se connecter</button>
                 <div style="margin-top: 15px; font-size: 0.9em; color: var(--gray);">
-                    💡 Vous recevrez vos mesures par WhatsApp
+                    💡 Interface familière WhatsApp
                 </div>
             </div>
 
@@ -418,41 +556,53 @@
             
             <div class="dashboard-content">
                 <div class="sidebar">
-                    <div class="nav-item active" onclick="showSection('patient-tableau')">📊 Tableau de Bord</div>
+                    <div class="nav-item active" onclick="showSection('patient-whatsapp')">💬 Saisie Mesure</div>
                     <div class="nav-item" onclick="showSection('patient-historique')">📋 Historique</div>
                     <div class="nav-item" onclick="showSection('patient-infirmier')">👨‍⚕️ Mon Infirmier</div>
                     <div class="nav-item" onclick="showSection('patient-urgence')">🚨 Urgence</div>
                 </div>
                 
                 <div class="content">
-                    <!-- TABLEAU DE BORD PATIENT -->
-                    <div id="patient-tableau" class="section active">
-                        <div class="glycemie-card">
-                            <h3>Dernière mesure de glycémie</h3>
-                            <div class="valeur-glycemie" id="currentGlycemie">--</div>
-                            <div id="glycemieStatut">Chargement...</div>
-                        </div>
-                        
-                        <div class="quick-actions">
-                            <div class="action-card" onclick="envoyerWhatsApp()">
-                                <div class="action-icon">📱</div>
-                                <div>Envoyer mesure</div>
-                                <small>Via WhatsApp</small>
+                    <!-- INTERFACE WHATSAPP -->
+                    <div id="patient-whatsapp" class="section active">
+                        <div class="whatsapp-container">
+                            <div class="whatsapp-header">
+                                <div class="wa-contact">
+                                    <div class="wa-avatar">🏥</div>
+                                    <div class="wa-info">
+                                        <div class="wa-name">Woyofal Santé Support</div>
+                                        <div class="wa-status">En ligne • Suivi glycémique</div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="action-card" onclick="showSection('patient-historique')">
-                                <div class="action-icon">📈</div>
-                                <div>Voir évolution</div>
-                                <small>Graphiques</small>
+
+                            <div class="wa-messages" id="waMessages">
+                                <div class="message system">
+                                    <div class="message-content">
+                                        🏥 <strong>Woyofal Santé</strong><br>
+                                        Bonjour <span id="patientNameChat"></span> ! Envoyez votre mesure de glycémie.
+                                    </div>
+                                    <div class="message-time" id="systemTime"></div>
+                                </div>
                             </div>
-                            <div class="action-card" onclick="showSection('patient-infirmier')">
-                                <div class="action-icon">💬</div>
-                                <div>Contacter</div>
-                                <small>Mon infirmier</small>
-                            </div>
-                            <div class="action-card" onclick="showSection('patient-urgence')">
-                                <div class="action-icon">🚨</div>
-                                <div>Urgence</div>
-                                <small>Contact rapide</small>
+
+                            <div class="wa-input-container">
+                                <div class="wa-input-wrapper">
+                                    <input type="text" 
+                                           class="wa-input" 
+                                           id="messageInput" 
+                                           placeholder="Tapez votre mesure (ex: 1.20)"
+                                           onkeypress="handleKeyPress(event)">
+                                    
+                                    <button class="wa-send-btn" onclick="envoyerMesure()">
+                                        <span>📤</span>
+                                    </button>
+                                </div>
+                                <div class="quick-buttons">
+                                    <button class="quick-btn" onclick="envoyerMesureRapide('1.20')">1.20</button>
+                                    <button class="quick-btn" onclick="envoyerMesureRapide('1.80')">1.80</button>
+                                    <button class="quick-btn" onclick="envoyerMesureRapide('2.50')">2.50</button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -495,11 +645,6 @@
                                 <div>Message urgence</div>
                                 <small>WhatsApp</small>
                             </div>
-                            <div class="action-card" onclick="contacterProche()">
-                                <div class="action-icon">👨‍👩‍👧</div>
-                                <div>Contacter proche</div>
-                                <small>Personne de confiance</small>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -522,7 +667,6 @@
                     <div class="nav-item" onclick="showSection('infirmier-patients')">👥 Mes Patients</div>
                     <div class="nav-item" onclick="showSection('infirmier-rdv')">📅 Rendez-vous</div>
                     <div class="nav-item" onclick="showSection('infirmier-paiements')">💰 Paiements</div>
-                    <div class="nav-item" onclick="showSection('infirmier-alertes')">🚨 Alertes</div>
                 </div>
                 
                 <div class="content">
@@ -541,13 +685,9 @@
                                 <div class="stat-number" id="statsAlertes">0</div>
                                 <div>Alertes actives</div>
                             </div>
-                            <div class="stat-card">
-                                <div class="stat-number" id="statsRevenus">0€</div>
-                                <div>Revenus du mois</div>
-                            </div>
                         </div>
                         
-                        <h3>📊 Activité récente</h3>
+                        <h3>📊 Dernières mesures</h3>
                         <div id="activiteRecente">
                             <div class="loading">
                                 <div class="spinner"></div>
@@ -558,7 +698,7 @@
                     
                     <!-- PATIENTS INFIRMIER -->
                     <div id="infirmier-patients" class="section">
-                        <div style="display: flex; justify-content: between; align-items: center; margin-bottom: 20px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                             <h3>👥 Mes Patients</h3>
                             <button class="btn btn-primary" onclick="showModal('modalNouveauRdv')">+ Nouveau RDV</button>
                         </div>
@@ -591,17 +731,6 @@
                             </div>
                         </div>
                     </div>
-                    
-                    <!-- ALERTES INFIRMIER -->
-                    <div id="infirmier-alertes" class="section">
-                        <h3>🚨 Alertes Actives</h3>
-                        <div id="listeAlertes">
-                            <div class="loading">
-                                <div class="spinner"></div>
-                                <p>Chargement des alertes...</p>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -628,7 +757,6 @@
                     <option value="Contrôle glycémie">Contrôle glycémie</option>
                     <option value="Visite à domicile">Visite à domicile</option>
                     <option value="Urgence">Urgence</option>
-                    <option value="Téléconsultation">Téléconsultation</option>
                 </select>
             </div>
             <button class="btn btn-primary" onclick="creerRendezVous()">Créer le RDV</button>
@@ -637,16 +765,16 @@
 
     <script>
         // =============================================
-        // CONFIGURATION
+        // CONFIGURATION AVEC VOS URLS MAKE
         // =============================================
         const CONFIG = {
             make: {
-                patient: 'https://hook.make.com/votre-webhook-patient',
-                infirmier: 'https://hook.make.com/votre-webhook-infirmier'
-            },
-            whatsapp: {
-                numero: '+33123456789',
-                message_mesure: 'Bonjour, je souhaite envoyer ma mesure de glycémie.'
+                patientAuth: 'https://hook.us2.make.com/f51skadolxbtdrixhehvmglloyh4ooaa',
+                patientData: 'https://hook.us2.make.com/nmw74vwy79yh3ckx919fc1eb3u23ug77',
+                saisieMesure: 'https://hook.us2.make.com/ay41ipiom7anvaoy1i0igq70idilwytw',
+                infirmierAuth: 'https://hook.us2.make.com/58q2jepg9xmsy9oarv1h69jr7s6ap9xa',
+                infirmierPatients: 'https://hook.us2.make.com/dta4ghir8vftowlq5kxfe8cgd4y3wgpw',
+                createRdv: 'https://hook.us2.make.com/dta4ghir8vftowlq5kxfe8cgd4y3wgpw' // Temporairement le même que infirmierPatients
             }
         };
 
@@ -677,7 +805,7 @@
             showLoading('patient');
             
             try {
-                const response = await fetch(CONFIG.make.patient, {
+                const response = await fetch(CONFIG.make.patientAuth, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -691,6 +819,8 @@
                 if (data.success) {
                     currentUser = { role: 'patient', ...data.patient };
                     showDashboard('patient');
+                    document.getElementById('patientNameChat').textContent = currentUser.prenom;
+                    document.getElementById('systemTime').textContent = new Date().toLocaleTimeString('fr-FR', {hour: '2-digit', minute:'2-digit'});
                     loadPatientData();
                 } else {
                     alert('Patient non trouvé. Vérifiez votre numéro.');
@@ -712,7 +842,7 @@
             showLoading('infirmier');
             
             try {
-                const response = await fetch(CONFIG.make.infirmier, {
+                const response = await fetch(CONFIG.make.infirmierAuth, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -767,31 +897,106 @@
         }
 
         // =============================================
-        // FONCTIONNALITÉS PATIENT
+        // FONCTIONNALITÉS PATIENT - INTERFACE WHATSAPP
         // =============================================
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                envoyerMesure();
+            }
+        }
+
+        async function envoyerMesure() {
+            const input = document.getElementById('messageInput');
+            const valeur = input.value.trim();
+            
+            if (!valeur || isNaN(parseFloat(valeur))) {
+                afficherMessageSystem('Veuillez entrer une valeur numérique valide (ex: 1.20)');
+                return;
+            }
+
+            // Afficher le message envoyé immédiatement
+            afficherMessageUtilisateur(valeur);
+            input.value = '';
+
+            try {
+                const response = await fetch(CONFIG.make.saisieMesure, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        action: 'saisie_mesure_directe',
+                        patient_id: currentUser.id,
+                        patient_phone: currentUser.telephone,
+                        valeur: parseFloat(valeur),
+                        date_mesure: new Date().toISOString()
+                    })
+                });
+
+                const result = await response.json();
+                
+                if (result.success) {
+                    // Message de confirmation style WhatsApp
+                    setTimeout(() => {
+                        afficherMessageSystem(`✅ Mesure ${valeur} g/L enregistrée avec succès ! Statut: ${result.statut}`);
+                    }, 1000);
+                    
+                    // Mettre à jour l'historique
+                    loadPatientData();
+                } else {
+                    afficherMessageSystem('❌ Erreur lors de l\'enregistrement');
+                }
+            } catch (error) {
+                afficherMessageSystem('❌ Erreur de connexion');
+            }
+        }
+
+        function envoyerMesureRapide(valeur) {
+            document.getElementById('messageInput').value = valeur;
+            envoyerMesure();
+        }
+
+        // Fonctions d'affichage des messages
+        function afficherMessageUtilisateur(valeur) {
+            const messagesContainer = document.getElementById('waMessages');
+            const messageHTML = `
+                <div class="message sent">
+                    <div class="message-content">
+                        ${valeur} g/L
+                    </div>
+                    <div class="message-time">${new Date().toLocaleTimeString('fr-FR', {hour: '2-digit', minute:'2-digit'})}</div>
+                </div>
+            `;
+            messagesContainer.innerHTML += messageHTML;
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        function afficherMessageSystem(texte) {
+            const messagesContainer = document.getElementById('waMessages');
+            const messageHTML = `
+                <div class="message system">
+                    <div class="message-content">${texte}</div>
+                </div>
+            `;
+            messagesContainer.innerHTML += messageHTML;
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
         async function loadPatientData() {
             try {
-                const response = await fetch(CONFIG.make.patient, {
+                const response = await fetch(CONFIG.make.patientData, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         action: 'get_patient_data',
-                        phone: currentUser.phone
+                        phone: currentUser.telephone
                     })
                 });
                 
                 const data = await response.json();
                 
-                // Mettre à jour l'interface
-                if (data.derniere_mesure) {
-                    document.getElementById('currentGlycemie').textContent = data.derniere_mesure.valeur + ' ' + data.derniere_mesure.unite;
-                    document.getElementById('glycemieStatut').textContent = getStatutMessage(data.derniere_mesure.statut);
-                    document.getElementById('glycemieStatut').className = 'status-' + data.derniere_mesure.statut;
-                }
-                
                 // Afficher l'historique
                 if (data.mesures) {
                     afficherHistoriquePatient(data.mesures);
+                    chargerHistoriqueMessages(data.mesures);
                 }
                 
                 // Afficher l'infirmier
@@ -830,7 +1035,7 @@
                     <tr>
                         <td>${formatDate(mesure.date_heure)}</td>
                         <td><strong>${mesure.valeur} ${mesure.unite}</strong></td>
-                        <td><span class="status-badge status-${mesure.statut}">${mesure.statut}</span></td>
+                        <td><span class="status-badge status-${mesure.statut.toLowerCase().includes('alerte') ? 'danger' : 'normal'}">${mesure.statut}</span></td>
                     </tr>
                 `;
             });
@@ -839,45 +1044,54 @@
             container.innerHTML = html;
         }
 
-        function getStatutMessage(statut) {
-            switch(statut) {
-                case 'normal': return '✅ Dans la norme';
-                case 'warning': return '⚠️ À surveiller';
-                case 'danger': return '🚨 Attention nécessaire';
-                default: return '📊 Mesure enregistrée';
+        function chargerHistoriqueMessages(mesures) {
+            const container = document.getElementById('waMessages');
+            let html = '';
+            
+            // Garder le message système
+            const systemMessage = container.querySelector('.message.system');
+            container.innerHTML = '';
+            if (systemMessage) {
+                container.appendChild(systemMessage);
             }
-        }
-
-        function envoyerWhatsApp() {
-            const message = encodeURIComponent(CONFIG.whatsapp.message_mesure);
-            window.open(`https://wa.me/${CONFIG.whatsapp.numero}?text=${message}`, '_blank');
+            
+            // Ajouter les mesures récentes comme messages
+            mesures.slice().reverse().forEach(mesure => {
+                html += `
+                    <div class="message sent">
+                        <div class="message-content">
+                            ${mesure.valeur} ${mesure.unite}
+                            ${mesure.statut.includes('Alerte') ? '🚨' : ''}
+                        </div>
+                        <div class="message-time">${formatDateHeure(mesure.date_heure)}</div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML += html;
+            container.scrollTop = container.scrollHeight;
         }
 
         function appelerInfirmier() {
             if (confirm('Appeler votre infirmier référent ?')) {
-                // Le numéro serait récupéré depuis les données patient
-                window.location.href = 'tel:+33123456700';
+                window.location.href = 'tel:+221701234567';
             }
         }
 
         function envoyerMessageInfirmier() {
             const message = encodeURIComponent('Bonjour, je souhaite vous contacter concernant mon suivi médical.');
-            window.open('https://wa.me/+33123456700?text=' + message, '_blank');
+            window.open('https://wa.me/221701234567?text=' + message, '_blank');
         }
 
         function appelerUrgence() {
             if (confirm('Appeler votre infirmier en urgence ?')) {
-                window.location.href = 'tel:+33123456700';
+                window.location.href = 'tel:+221701234567';
             }
         }
 
         function envoyerMessageUrgence() {
             const message = encodeURIComponent('🚨 URGENCE - J\'ai besoin d\'aide médicale immédiate.');
-            window.open('https://wa.me/+33123456700?text=' + message, '_blank');
-        }
-
-        function contacterProche() {
-            window.location.href = 'tel:+33123456799';
+            window.open('https://wa.me/221701234567?text=' + message, '_blank');
         }
 
         // =============================================
@@ -885,27 +1099,8 @@
         // =============================================
         async function loadInfirmierData() {
             try {
-                // Charger les statistiques
-                const statsResponse = await fetch(CONFIG.make.infirmier, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        action: 'get_stats_infirmier',
-                        infirmier_id: currentUser.id
-                    })
-                });
-                
-                const statsData = await statsResponse.json();
-                
-                document.getElementById('statsPatients').textContent = statsData.total_patients || 0;
-                document.getElementById('statsRdvAujourdhui').textContent = statsData.rdv_aujourdhui || 0;
-                document.getElementById('statsAlertes').textContent = statsData.alertes_actives || 0;
-                document.getElementById('statsRevenus').textContent = (statsData.revenus_mois || 0) + '€';
-                
-                // Charger les patients
+                // Charger les statistiques et patients
                 await loadPatientsInfirmier();
-                
-                // Charger les RDV
                 await loadRdvInfirmier();
                 
             } catch (error) {
@@ -915,7 +1110,7 @@
 
         async function loadPatientsInfirmier() {
             try {
-                const response = await fetch(CONFIG.make.infirmier, {
+                const response = await fetch(CONFIG.make.infirmierPatients, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -926,6 +1121,9 @@
                 
                 const data = await response.json();
                 afficherPatientsInfirmier(data.patients);
+                
+                // Mettre à jour les stats
+                document.getElementById('statsPatients').textContent = data.patients ? data.patients.length : 0;
                 
             } catch (error) {
                 console.error('Erreur chargement patients:', error);
@@ -971,50 +1169,13 @@
 
         async function loadRdvInfirmier() {
             try {
-                const response = await fetch(CONFIG.make.infirmier, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        action: 'get_rdv_infirmier',
-                        infirmier_id: currentUser.id
-                    })
-                });
-                
-                const data = await response.json();
-                afficherRdvInfirmier(data.rdv);
+                // Implémentez le chargement des RDV
+                const rdvAujourdhui = 2; // Exemple
+                document.getElementById('statsRdvAujourdhui').textContent = rdvAujourdhui;
                 
             } catch (error) {
                 console.error('Erreur chargement RDV:', error);
             }
-        }
-
-        function afficherRdvInfirmier(rdvList) {
-            const container = document.getElementById('calendrierRdv');
-            
-            if (!rdvList || rdvList.length === 0) {
-                container.innerHTML = '<p>Aucun rendez-vous planifié</p>';
-                return;
-            }
-            
-            let html = '<table class="table"><thead><tr><th>Date</th><th>Patient</th><th>Type</th><th>Statut</th><th>Actions</th></tr></thead><tbody>';
-            
-            rdvList.forEach(rdv => {
-                html += `
-                    <tr>
-                        <td>${formatDate(rdv.date_heure)}</td>
-                        <td>${rdv.patient_nom}</td>
-                        <td>${rdv.type}</td>
-                        <td><span class="status-badge status-${rdv.statut}">${rdv.statut}</span></td>
-                        <td>
-                            <button class="btn btn-primary" onclick="validerVisite('${rdv.id}')">Valider</button>
-                            <button class="btn" onclick="annulerRdv('${rdv.id}')">Annuler</button>
-                        </td>
-                    </tr>
-                `;
-            });
-            
-            html += '</tbody></table>';
-            container.innerHTML = html;
         }
 
         function contacterPatient(telephone) {
@@ -1023,7 +1184,6 @@
 
         function voirDossierPatient(patientId) {
             alert(`Ouvrir le dossier du patient ${patientId}`);
-            // Implémentez l'ouverture du dossier patient
         }
 
         async function creerRendezVous() {
@@ -1037,7 +1197,7 @@
             }
             
             try {
-                const response = await fetch(CONFIG.make.infirmier, {
+                const response = await fetch(CONFIG.make.createRdv, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -1054,27 +1214,13 @@
                 if (data.success) {
                     alert('Rendez-vous créé avec succès !');
                     closeModal('modalNouveauRdv');
-                    loadRdvInfirmier(); // Recharger la liste
+                    loadRdvInfirmier();
                 } else {
                     alert('Erreur lors de la création du RDV');
                 }
                 
             } catch (error) {
                 alert('Erreur de connexion');
-            }
-        }
-
-        function validerVisite(rdvId) {
-            if (confirm('Marquer cette visite comme validée ?')) {
-                // Implémentez la validation de visite
-                alert(`Visite ${rdvId} validée !`);
-            }
-        }
-
-        function annulerRdv(rdvId) {
-            if (confirm('Annuler ce rendez-vous ?')) {
-                // Implémentez l'annulation du RDV
-                alert(`RDV ${rdvId} annulé`);
             }
         }
 
@@ -1118,6 +1264,11 @@
             });
         }
 
+        function formatDateHeure(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleTimeString('fr-FR', {hour: '2-digit', minute:'2-digit'});
+        }
+
         // Fermer les modales en cliquant à l'extérieur
         window.onclick = function(event) {
             document.querySelectorAll('.modal').forEach(modal => {
@@ -1126,6 +1277,9 @@
                 }
             });
         }
+
+        // Initialiser l'heure système
+        document.getElementById('systemTime').textContent = new Date().toLocaleTimeString('fr-FR', {hour: '2-digit', minute:'2-digit'});
     </script>
 </body>
 </html>
